@@ -1,0 +1,50 @@
+{
+  "name": "games-api",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nodemon --watch \"server/**\" --ext \"ts,json\" --ignore \"server/**/*.spec.ts\" --exec \"npx tsx server/index.ts\"",
+    "start": "node dist/index.js",
+    "build": "tsc && node addExtension.js",
+    "ts-typecheck": "tsc --noEmit"
+  },
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.10.4",
+    "@apollo/subgraph": "^2.8.3",
+    "@cerbos/grpc": "^0.18.4",
+    "@elastic/elasticsearch": "^8.17.0",
+    "@graphql-tools/schema": "^10.0.4",
+    "base64-url": "^2.3.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dataloader": "^2.2.2",
+    "express": "^4.19.2",
+    "graphql": "^16.9.0",
+    "graphql-tag": "^2.12.6",
+    "js-base64": "^3.7.7",
+    "jsonwebtoken": "^9.0.2",
+    "md5": "^2.3.0",
+    "mongoose": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^6.9.14",
+    "nodemon": "^3.1.4",
+    "openai": "^4.80.1",
+    "papaparse": "^5.5.1",
+    "redis": "^4.7.0",
+    "ts-node": "^10.9.2",
+    "uuid": "^10.0.0",
+    "uuidv4": "^6.2.13",
+    "yaml": "^2.4.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "@types/nodemailer": "^6.4.16",
+    "@types/papaparse": "^5.3.15"
+  }
+}
