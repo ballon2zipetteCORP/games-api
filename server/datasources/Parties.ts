@@ -12,6 +12,7 @@ export interface IParty {
     ownerId: string;
     players: IPartyPlayer[];
     gameId: string;
+    settings: unknown;
 }
 
 export default class Parties {
@@ -33,7 +34,8 @@ export default class Parties {
             id: uuid(),
             gameId,
             ownerId: player.id,
-            players: [player]
+            players: [player],
+            settings: {}
         });
     }
 

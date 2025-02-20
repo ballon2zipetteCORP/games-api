@@ -9,11 +9,13 @@ const PRIVATE_KEY = fs.readFileSync(path.join("./keys", "private.key"));
 async function unserialize(
   authorization: string | undefined
 ): Promise<IMe | null> {
-  if (!authorization?.startsWith("Bearer")) {
+  const token = authorization!?.split(/\s+/g)?.pop();
+  try {
+    // faut faire belek ça retourne une erreur
+    return jwt.verify(token!, PUBLIC_KEY, { algorithms: ["RS256"] }) as IMe;
+  } catch(e) {
     return null;
   }
-  const token = authorization!?.split(/\s+/g)?.pop();
-  return jwt.verify(token!, PUBLIC_KEY, { algorithms: ["RS256"] }) as IMe;
 }
 
 async function serialize(payload: IMe): Promise<string> {

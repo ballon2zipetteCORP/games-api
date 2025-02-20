@@ -27,18 +27,23 @@ interface IParams {
 }
 
 async function boostrap({ init, schema, dataSources, routes }: IParams) {
+    schema = buildSubgraphSchema(schema);
+
     const server = new ApolloServer({
-        schema: applyMeDirective(buildSubgraphSchema(schema)),
+        schema: applyMeDirective(schema),
         csrfPrevention: true,
         cache: "bounded",
-        plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+        plugins: [
+            ApolloServerPluginDrainHttpServer({ httpServer })
+        ]
     });
 
     await server.start()
     await mongoose.connect(process.env.MONGO_URI!)
 
-    if(init)
+    if(init) {
         await init();
+    }
 
     app.use("/graphql",
         expressMiddleware(server, {
@@ -57,11 +62,13 @@ async function boostrap({ init, schema, dataSources, routes }: IParams) {
         })
     );
 
-    if(routes)
+    if(routes) {
         routes(app);
-
+    }
+    
     const port = 8080;
     httpServer.listen({port});
+
     console.log(`🚀  Server ready at http://localhost:${port}/graphql`);
 }
 

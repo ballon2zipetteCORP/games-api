@@ -8,7 +8,8 @@ export interface IGame {
     createdAt: Date;
     minPlayers: number;
     maxPlayers: number;
-    metadata: Record<string, unknown>;
+    metadata: unknown;
+    settings: string[];
 }
 
 const schema = new Schema<IGame>({
@@ -18,7 +19,8 @@ const schema = new Schema<IGame>({
     createdAt: { type: Date, required: true, default: Date.now },
     minPlayers: { type: Number, required: true },
     maxPlayers: { type: Number },
-    metadata: { type: JSON }
+    metadata: { type: JSON },
+    settings: { type: [String] }
 });
 
 export default mongoose.model("games", schema);

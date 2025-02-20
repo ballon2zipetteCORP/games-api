@@ -25,7 +25,7 @@ export default gql`
         displayName: String
         image: String
         description: String
-        expectedActions: [String!]
+        expectedActions: [String!] 
     }
 
     extend type Query {

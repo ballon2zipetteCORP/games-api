@@ -7,6 +7,7 @@ export default gql`
         owner: PartyPlayer
         players: [PartyPlayer!]
         game: Game
+        settings: JSON
     }
 
     type PartyPlayer {
