@@ -7,4 +7,8 @@ export default gql`
 
     directive @requireMe on FIELD_DEFINITION
 
+    extend type Mutation {
+        createIdentity(displayName: String!): String
+    }
+
 `

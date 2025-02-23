@@ -12,7 +12,7 @@ export default class Games {
     public async get(id: string) {
         const game = await models.game.findOne({ id });
         if(!game) return null;
-        const { metadata, ...r } = game.toObject();
+        const { metadata, ...r }: any = game.toObject();
         return {...metadata, ...r}
     }
 

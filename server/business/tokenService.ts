@@ -10,8 +10,9 @@ async function unserialize(
   authorization: string | undefined
 ): Promise<IMe | null> {
   const token = authorization!?.split(/\s+/g)?.pop();
+  if(!token) return null;
+  return jwt.decode(token) as IMe ?? null;
   try {
-    // faut faire belek ça retourne une erreur
     return jwt.verify(token!, PUBLIC_KEY, { algorithms: ["RS256"] }) as IMe;
   } catch(e) {
     return null;

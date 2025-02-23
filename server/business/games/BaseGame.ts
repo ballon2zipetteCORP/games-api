@@ -8,27 +8,28 @@ export class GameError extends Error {
 }
 
 export enum GameStatus {
-    WAITING_FOR_PLAYERS,
-    READY,
-    IN_PROGRESS,
-    ENDED,
-    IN_ERROR,
-    UNKNOWN
+    WAITING_FOR_PLAYERS = "WAITING_FOR_PLAYERS",
+    READY = "READY",
+    IN_PROGRESS = "IN_PROGRESS",
+    ENDED = "ENDED",
+    IN_ERROR = "IN_ERROR",
+    UNKNOWN = "UNKNOWN"
 }
 
-export type TGameParty = IParty&{game: IGame};
-
 export interface IBaseGameParams {
-    party: TGameParty;
+    party: IParty;
+    game: IGame;
 }
 
 export default abstract class BaseGame {
 
-    protected party: TGameParty;
+    protected party: IParty;
+    protected game: IGame;
     private status: GameStatus;
 
-    public constructor({party}: IBaseGameParams) {
+    public constructor({party, game}: IBaseGameParams) {
         this.party = party;
+        this.game = game;
         this.status = GameStatus.UNKNOWN;
 
         this.updateStatus();
@@ -38,7 +39,7 @@ export default abstract class BaseGame {
      * Update the current game object with the new party data
      * @param party the new party object
      */
-    public update(party: TGameParty): void {
+    public update(party: IParty): void {
         this.party = party;
         this.updateStatus();
     }
@@ -87,7 +88,7 @@ export default abstract class BaseGame {
 
     private updateStatus(): void {
         this.status = GameStatus.WAITING_FOR_PLAYERS;
-        if(this.party.players.length >= this.party.game.minPlayers) {
+        if(this.party.players.length >= this.game.minPlayers) {
             this.status = GameStatus.READY;
         }
     }

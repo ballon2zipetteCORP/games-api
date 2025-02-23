@@ -18,8 +18,8 @@ interface IWerewolfSettings {
 
 export default class WerewolfGame extends BaseGame {
 
-    public constructor({ party }: IBaseGameParams) {
-        super({ party });
+    public constructor({ party, game }: IBaseGameParams) {
+        super({ party, game });
     }
 
     public end(): void {
@@ -35,7 +35,7 @@ export default class WerewolfGame extends BaseGame {
     private distributeRoles(): void {
         const players = this.party.players;
         const settings = this.party.settings as IWerewolfSettings;
-        const metadata = this.party.game.metadata as IWerewolfMetadata;
+        const metadata = this.game.metadata as IWerewolfMetadata;
 
         const rolesSettings = Object.entries(settings?.NUMBER_OF_PLAYER_PER_ROLE ?? {});
         for(const player of players) {

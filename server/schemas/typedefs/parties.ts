@@ -8,6 +8,7 @@ export default gql`
         players: [PartyPlayer!]
         game: Game
         settings: JSON
+        status: String
     }
 
     type PartyPlayer {
@@ -20,9 +21,11 @@ export default gql`
     }
 
     extend type Mutation {
-        createParty(gameId: ID!, displayName: String!): Party @requireMe
-        joinParty(id: ID!, displayName: String!): Party @requireMe
+        createParty(gameId: ID!): Party @requireMe
+        startParty(id: ID!): Party @requireMe
+        joinParty(id: ID!): Party @requireMe
         leaveParty(id: ID!): Party @requireMe
+        savePartySettings(id: ID!, settings: JSON!): Party @requireMe
     }
 
 `

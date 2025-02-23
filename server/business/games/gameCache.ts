@@ -9,14 +9,18 @@ class GameCacheError extends Error {
     }
 }
 
-const retrieveGame = (partyId: string): BaseGame => {
-    if(!gameCache.has(partyId)) {
-        throw new GameCacheError("No game were found, please store in cache first.");
-    }
-    return gameCache.get(partyId)!;
+const retrieve = (partyId: string): BaseGame => {
+    return gameCache.get(partyId)! ?? null;
 }
 
-const storeGame = (partyId: string, game: BaseGame): void => {
+const del = (partyId: string): void => {
+    if(!gameCache.has(partyId)) {
+        return;
+    }
+    gameCache.delete(partyId);
+}
+
+const store = (partyId: string, game: BaseGame): void => {
     if(gameCache.has(partyId)) {
         throw new GameCacheError("Game already stored in cache.");
     }
@@ -24,6 +28,7 @@ const storeGame = (partyId: string, game: BaseGame): void => {
 }
 
 export default {
-    retrieveGame,
-    storeGame
+    retrieve,
+    del,
+    store
 }
