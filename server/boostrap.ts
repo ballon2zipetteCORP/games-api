@@ -7,14 +7,15 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { ApolloServer } from "@apollo/server";
 import {buildSubgraphSchema} from "@apollo/subgraph";
+import { WebSocketExpress } from 'websocket-express';
 
 import tokenService from "./business/tokenService";
 
 import { IDataSourcesParams, IDataSources } from "./types";
 import { applyMeDirective } from "./business/directives/requiresMeDirective";
 
-const app = express();
-const httpServer = http.createServer(app);
+const app = new WebSocketExpress();
+const httpServer = http.createServer();
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -23,7 +24,7 @@ interface IParams {
     init?: () => Promise<void>;
     schema: any;
     dataSources: ({ language }: IDataSourcesParams) => IDataSources;
-    routes?: (app: Express) => void;
+    routes?: (app: WebSocketExpress) => void;
 }
 
 async function boostrap({ init, schema, dataSources, routes }: IParams) {
@@ -67,6 +68,7 @@ async function boostrap({ init, schema, dataSources, routes }: IParams) {
     }
     
     const port = 8080;
+    app.attach(httpServer);
     httpServer.listen({port});
 
     console.log(`🚀  Server ready at http://localhost:${port}/graphql`);

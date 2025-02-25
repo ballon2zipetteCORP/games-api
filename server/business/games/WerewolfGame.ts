@@ -29,7 +29,6 @@ export default class WerewolfGame extends BaseGame {
     public start(): void {
         super.start();
         this.distributeRoles();
-        // TODO: game start
     }
 
     private distributeRoles(): void {
@@ -37,13 +36,19 @@ export default class WerewolfGame extends BaseGame {
         const settings = this.party.settings as IWerewolfSettings;
         const metadata = this.game.metadata as IWerewolfMetadata;
 
-        const rolesSettings = Object.entries(settings?.NUMBER_OF_PLAYER_PER_ROLE ?? {});
+        const rolesSettings = Object.entries(
+            settings?.NUMBER_OF_PLAYER_PER_ROLE ?? 
+                Object.fromEntries(metadata.roles.map(({id}) => [id, 0]))
+        );
         for(const player of players) {
             const index = Math.floor(Math.random() * rolesSettings.length) % rolesSettings.length;
             const [id, quota] = rolesSettings[index];
             const role = metadata.roles.find(r => r.id === id)!;
 
-            // TODO: send message to the player
+            this.sendMessage<{ role: IRole; }>(player.id, { 
+                type: "ROLE_GIVEN", 
+                data: { role }
+            });
             
             const newQuota = quota-1;
             rolesSettings[index][1] = newQuota;

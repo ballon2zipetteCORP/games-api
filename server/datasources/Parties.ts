@@ -70,6 +70,12 @@ export default class Parties {
             ownerId = players[0].id;
         }
 
+        const updatedParty = await this.update(id, { players });
+        const cachedGame = gameCache.retrieve(id);
+        
+        cachedGame.broadcast<{ player: IPartyPlayer }>({ type: "PLAYER_LEAVED", data: { player: player! } })
+        cachedGame?.update(updatedParty as IParty);
+
         return this.update(id, { ownerId, players });
     }
 
@@ -81,13 +87,15 @@ export default class Parties {
         const party = await this.get(id);
         if(!party) throw new Error("Party not found.");
         const players = [...party.players];
-        players.push({ 
-            id: me.id, 
-            displayName: me.displayName 
-        });
+        const player = {  id: me.id,  displayName: me.displayName  };
+        
+        players.push(player);
 
         const updatedParty = await this.update(id, { players });
-        gameCache.retrieve(id)?.update(updatedParty as IParty);
+        const cachedGame = gameCache.retrieve(id);
+        
+        cachedGame.broadcast<{ player: IPartyPlayer }>({ type: "PLAYER_JOINED", data: { player } })
+        cachedGame?.update(updatedParty as IParty);
         return updatedParty;
     }
 

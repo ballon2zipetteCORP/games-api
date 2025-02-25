@@ -1,5 +1,6 @@
 import { IParty } from "../../datasources/Parties";
 import { IGame } from "../../models/game";
+import { webSocketConnections } from "../../services/websocket";
 
 export class GameError extends Error {
     constructor(message: string) {
@@ -19,6 +20,11 @@ export enum GameStatus {
 export interface IBaseGameParams {
     party: IParty;
     game: IGame;
+}
+
+export interface IMessage<T={}> {
+    type: string;
+    data?: T
 }
 
 export default abstract class BaseGame {
@@ -59,6 +65,7 @@ export default abstract class BaseGame {
             throw new GameError("Game is not ready, actual status: " + this.getStatus());
         }
         this.status = GameStatus.IN_PROGRESS;
+        this.broadcast({ type: "GAME_STARTED", data: { status: this.status } });
     }
     
     /**
@@ -69,21 +76,27 @@ export default abstract class BaseGame {
             throw new GameError("Game is not in progress, actual status: " + this.getStatus());
         }
         this.status = GameStatus.ENDED;
+        this.broadcast({ type: "GAME_ENDED", data: { status: this.status } });
     }
 
     /**
      * Broadcast a message to all party players.
      */
-    protected broadcast<T>(data: T): void {
-        this.party.players.forEach(p => this.sendMessage(p.id, data));
+    public broadcast<T>(message: IMessage<T>): void {
+        this.party.players.forEach(p => this.sendMessage(p.id, message));
     }
 
     /**
      * Send a message to a specific player
      */
-    protected sendMessage<T>(playerId: string, data: T): void {
-        // TODO: send a message
-        
+    protected sendMessage<T>(playerId: string, message: IMessage<T>): void {
+        const playerWs = webSocketConnections[playerId];
+        if(!playerWs) return;
+        playerWs?.send(JSON.stringify({
+            ...message,
+            gameId: this.game.id,
+            sentAt: new Date()
+        }));
     }
 
     private updateStatus(): void {
