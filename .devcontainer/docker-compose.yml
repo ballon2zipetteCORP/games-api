@@ -1,5 +1,5 @@
 name: ${APP_NAME}
-services: 
+services:
   microservice:
     build:
       context: ..
@@ -14,6 +14,8 @@ services:
       MONGO_URI: mongodb://mongo:27017/collection
   mongo:
     image: mongo:latest
+    volumes:
+      - ../mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
       - "27017:27017"
   redis:
