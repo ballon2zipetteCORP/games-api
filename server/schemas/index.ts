@@ -1,10 +1,4 @@
-import fs from "fs"
+import games from "./games";
+import schema from "./schema";
 
-const schemas = []
-for(const file of fs.readdirSync("./server/schemas/resolvers")) {
-    const resolvers = (await import(`./resolvers/${file}`)).default;
-    const typeDefs = (await import(`./typeDefs/${file}`)).default;
-    schemas.push({ resolvers, typeDefs })
-}
-
-export default schemas as any;
+export default [games, schema, games];

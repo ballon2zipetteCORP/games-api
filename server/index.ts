@@ -1,6 +1,6 @@
 import { WebSocketExpress } from "websocket-express";
 import {boostrap} from "./boostrap";
-import { Games, Parties } from "./datasources";
+import { Games, Parties } from "./datasources/index";
 import schema from "./schemas/index";
 import websocket from "./services/websocket";
 

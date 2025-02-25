@@ -1,9 +1,7 @@
 import client from "../services/redis"
-import {v4 as uuid} from "uuid";
 import { IMe } from "../types";
 import gameCache from "../business/games/gameCache";
-import { models } from "../models";
-import BaseGame from "../business/games/BaseGame";
+import { models } from "../models/index";
 import WerewolfGame from "../business/games/WerewolfGame";
 
 export interface IPartyPlayer {

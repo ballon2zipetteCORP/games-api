@@ -1,4 +1,4 @@
-import { Games, Parties } from "./datasources";
+import { Games, Parties } from "./datasources/index";
 
 export interface IContext {
     language: string;

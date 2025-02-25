@@ -1,6 +1,7 @@
 {
   "name": "games-api",
   "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch \"server/**\" --ext \"ts,json\" --ignore \"server/**/*.spec.ts\" --exec \"npx tsx server/index.ts\"",
     "start": "node dist/index.js",
