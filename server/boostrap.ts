@@ -47,7 +47,6 @@ async function boostrap({ init, schema, dataSources, routes }: IParams) {
     }
 
     app.use("/graphql",
-        cors(),
         expressMiddleware(server, {
             context: async ({req}: any) => {
                 const authorization = req.headers?.authorization || "";
