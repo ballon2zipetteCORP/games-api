@@ -16,6 +16,7 @@
     "@cerbos/grpc": "^0.18.4",
     "@elastic/elasticsearch": "^8.17.0",
     "@graphql-tools/schema": "^10.0.4",
+    "@graphql-tools/utils": "^10.8.3",
     "base64-url": "^2.3.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
